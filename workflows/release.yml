@@ -1,0 +1,33 @@
+name: Release Python
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set version
+      run: echo "__version__ = \""${GITHUB_REF#"refs/tags/v"}"\"" > _version.py
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install Twine
+      run: pip install wheel twine
+
+    - name: Build release
+      run: python setup.py sdist bdist_wheel
+
+    - name: Upload
+      run: twine upload dist/* --verbose --non-interactive
+      env:
+        TWINE_USERNAME: ${{secrets.TWINE_USERNAME}}
+        TWINE_PASSWORD: ${{secrets.TWINE_PASSWORD}}
