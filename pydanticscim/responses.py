@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Tuple, List, Optional, Dict
+from typing import Tuple, List, Optional, Any
 
 from pydantic import BaseModel
 
@@ -26,7 +26,7 @@ class PatchOp(Enum):
 class PatchOperation(BaseModel):
     op: PatchOp
     path: str
-    value: Optional[Dict] = None
+    value: Optional[Any] = None
 
 
 class PatchRequest(BaseModel):
