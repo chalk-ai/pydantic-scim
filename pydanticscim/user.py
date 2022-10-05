@@ -1,7 +1,9 @@
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from pydantic import AnyUrl, BaseModel, EmailStr, Field
+
+from pydanticscim.group import Group
 
 
 class Name(BaseModel):
@@ -158,30 +160,6 @@ class Address(BaseModel):
     )
 
 
-class GroupKind(Enum):
-    direct = "direct"
-    indirect = "indirect"
-
-
-class Group(BaseModel):
-    value: Optional[str] = Field(
-        None, description="The identifier of the User's group."
-    )
-    _ref: Optional[AnyUrl] = Field(
-        None,
-        alias="$ref",
-        description="The URI of the corresponding 'Group' resource to which the user belongs.",
-    )
-    display: Optional[str] = Field(
-        None,
-        description="A human-readable name, primarily used for display purposes.  READ-ONLY.",
-    )
-    type: Optional[GroupKind] = Field(
-        None,
-        description="A label indicating the attribute's function, e.g., 'direct' or 'indirect'.",
-    )
-
-
 class Entitlement(BaseModel):
     value: Optional[str] = Field(None, description="The value of an entitlement.")
     display: Optional[str] = Field(
@@ -232,6 +210,8 @@ class User(BaseModel):
         ...,
         description="Unique identifier for the User, typically used by the user to directly authenticate to the service provider.  Each User MUST include a non-empty userName value.  This identifier MUST be unique across the service provider's entire set of Users.  REQUIRED.",
     )
+    # Seems required by okta, but not in the json schema spec.
+    id: Optional[str] = None
     name: Optional[Name] = Field(
         None,
         description="The components of the user's real name.  Providers MAY return just the full name as a single string in the formatted sub-attribute, or they MAY return just the individual component attributes using the other sub-attributes, or they MAY return both.  If both variants are returned, they SHOULD be describing the same name, with the formatted name indicating how the component attributes should be combined.",
@@ -307,3 +287,4 @@ class User(BaseModel):
     x509Certificates: Optional[List[X509Certificate]] = Field(
         None, description="A list of certificates issued to the User."
     )
+    schemas: Tuple[str] = ("urn:ietf:params:scim:schemas:core:2.0:User",)
