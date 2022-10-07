@@ -16,6 +16,14 @@ class SCIMError(BaseModel):
     def not_found(cls, detail: str = "Not found") -> "SCIMError":
         return cls(detail=detail, status=404)
 
+    @classmethod
+    def conflict(cls, detail: str = "Conflict") -> "SCIMError":
+        return cls(detail=detail, status=409)
+
+    @classmethod
+    def unprocessable(cls, detail: str = "Unprocessable Entity") -> "SCIMError":
+        return cls(detail=detail, status=422)
+
 
 class PatchOp(Enum):
     replace = "replace"
