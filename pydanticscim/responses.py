@@ -52,12 +52,13 @@ class ListResponse(BaseModel):
     def for_users(
         cls,
         users: List[User],
+        total_results: int,
         start_index: int = 0,
         items_per_page: int | None = None,
     ) -> "ListResponse":
         return cls(
             Resources=users,
-            totalResults=len(users),
+            totalResults=total_results,
             itemsPerPage=items_per_page or len(users),
             startIndex=start_index,
         )
@@ -66,12 +67,13 @@ class ListResponse(BaseModel):
     def for_groups(
         cls,
         groups: List[Group],
+        total_results: int,
         start_index: int = 0,
         items_per_page: int | None = None,
     ) -> "ListResponse":
         return cls(
             Resources=groups,
-            totalResults=len(groups),
+            totalResults=total_results,
             itemsPerPage=items_per_page or len(groups),
             startIndex=start_index,
         )
