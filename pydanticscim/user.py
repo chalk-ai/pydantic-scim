@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple
 
 from pydantic import AnyUrl, BaseModel, EmailStr, Field
 
-from pydanticscim.group import Group
+from pydanticscim.group import GroupMember
 
 
 class Name(BaseModel):
@@ -272,7 +272,7 @@ class User(BaseModel):
         None,
         description="A physical mailing address for this User. Canonical type values of 'work', 'home', and 'other'.  This attribute is a complex type with the following sub-attributes.",
     )
-    groups: Optional[List[Group]] = Field(
+    groups: Optional[List[GroupMember]] = Field(
         None,
         description="A list of groups to which the user belongs, either through direct membership, through nested groups, or dynamically calculated.",
     )
