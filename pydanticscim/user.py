@@ -287,4 +287,4 @@ class User(BaseModel):
     x509Certificates: Optional[List[X509Certificate]] = Field(
         None, description="A list of certificates issued to the User."
     )
-    schemas: Tuple[str] = ("urn:ietf:params:scim:schemas:core:2.0:User",)
+    schemas: Set[str] = ("urn:ietf:params:scim:schemas:core:2.0:User",)
